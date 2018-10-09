@@ -29,15 +29,17 @@ def RSserver():
     for entry in fDNSRSList:
         print("Storing: ",entry)
         inputEntries.append(entry)
+    while True:
+        client_data_received = csockid.recv(100).decode()
+        if not data:
+            break
+        for entry in inputEntries:
+            splitEntry = entry.split(" ")
+            entryHostname = splitEntry[0].trim()
+            if(entryHostname == client_data_received):
+                csockid.send(entryHostname.encode('utf-8'))
 
-
-    # TODO: on acess - split on (" ") which separates string into array
-    # TODO: check first s_received[0] with s_table[0] for every string and check match
-
-    #Read data from DNSRS and store in data structure
-    #Receive data from client
-    #   if hostname found in data structure return resolved entry
-    #   else forward data from client to TS server
-
+    rs_socket.close()
+    exit()
 
 RSserver()
