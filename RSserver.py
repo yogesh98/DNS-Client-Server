@@ -17,6 +17,10 @@ def RSserver():
     csockid,addr=ss.accept()
     print("[RS:] connection request from ",addr)
 
+    # TODO: store read-in file into array of strings
+    # TODO: on acess - split on (" ") which separates string into array
+    # TODO: check first s_received[0] with s_table[0] for every string and check match  
+
     #Read data from DNSRS and store in data structure
     #Receive data from client
     #   if hostname found in data structure return resolved entry
