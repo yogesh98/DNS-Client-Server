@@ -26,7 +26,7 @@ def initSockets():
     for line in fHostnamesList:
         #Send each line to RS server
         print("[C:] sending:",line)
-        client_socket.send(line.encode())
+        client_socket.send(line.encode('utf-8'))
         #received data from RS
         rs_data_received = client_socket.recv(100)
         rs_resolved_entry = ts_data_received.decode('utf-8')

@@ -40,9 +40,11 @@ def TSserver():
             if entryHostname == client_data_received:
                 csockid.send(entryHostname.encode('utf-8'))
                 entryFound = True
-        if !entryFound:
+        if entryFound == False :
             csockid.send("%s + - Error:HOST NOT FOUND" % client_data_received)
 
 
     ts_socket.close()
     exit()
+
+TSserver()
