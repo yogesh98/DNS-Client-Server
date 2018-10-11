@@ -31,7 +31,7 @@ def TSserver():
         inputEntries.append(entry)
     entryFound = False
     while True:
-        client_data_received = csockid.recv(100).decode()
+        client_data_received = csockid.recv(100).decode('utf-8')
         if not data:
             break
         for entry in inputEntries:

@@ -30,7 +30,7 @@ def RSserver():
         print("Storing: ",entry)
         inputEntries.append(entry)
     while True:
-        client_data_received = csockid.recv(100).decode()
+        client_data_received = csockid.recv(100).decode('utf-8')
         if not data:
             break
         for entry in inputEntries:
