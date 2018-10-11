@@ -36,8 +36,10 @@ def RSserver():
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0].trim()
-            #test
-            if(entryHostname == client_data_received):
+            entryCode = splitEntry[2].trim()
+            if entryCode == 'NS':
+                csockid.send(entryHostname.encode('utf-8'))
+            elif entryHostname == client_data_received:
                 csockid.send(entryHostname.encode('utf-8'))
 
     rs_socket.close()
