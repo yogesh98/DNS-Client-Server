@@ -20,6 +20,9 @@ def initSockets():
     fOut = open("RESOLVED.txt", "w+")
     fHostnames = open(sys.argv[1], "r")
     fHostnamesList = fHostnames.readlines()
+
+    tsConnected = False
+
     for line in fHostnamesList:
         #Send each line to RS server
         print("[C:] sending:",line)
@@ -39,9 +42,12 @@ def initSockets():
         elif splicedEntry == 'NS':
             #split on space, take s[0] as TS hostname
             splitResolved = resolved_entry.split(" ")
-            ts_addr = splitResolved[0].trim()
-            ts_port = 50008
-            ts_server_binding = (ts_addr,ts_port)
+            if tsConnected == False:
+                ts_addr = splitResolved[0].trim()
+                ts_port = 50008
+                ts_server_binding = (ts_addr,ts_port)
+                tsConnected = True
+
             client_socket.send(line.encode())
             ts_data_received = client_socket.recv(100)
             ts_resolved_entry = ts_data_received.decode('utf-8')
