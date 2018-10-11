@@ -7,12 +7,15 @@ if len(sys.argv) != 3:
     sys.exit()
 
 def initSockets():
+
+    #init rs socket
     try:
         rs_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
         print("[C:] RS socket created")
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error", err))
 
+    #init ts socket
     try:
         ts_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
         print("[C:] TS socket created")
@@ -25,13 +28,11 @@ def initSockets():
     rs_server_binding = (rs_addr,rs_port)
     rs_socket.connect(rs_server_binding)
 
-    ts_addr = splitResolved[0].trim()
-    ts_port = 50008
-    ts_server_binding = (ts_addr,ts_port)
-
     fOut = open("RESOLVED.txt", "w+")
     fHostnames = open(sys.argv[1], "r")
     fHostnamesList = fHostnames.readlines()
+
+    tsConnected = False
 
     for line in fHostnamesList:
         #Send each line to RS server
@@ -52,6 +53,14 @@ def initSockets():
         elif splicedEntry == 'NS':
             #split on space, take s[0] as TS hostname
             splitResolved = resolved_entry.split(" ")
+            if tsConnected == False
+                #setup TS
+                ts_addr = splitResolved[0].trim()
+                ts_port = 50008
+                ts_server_binding = (ts_addr,ts_port)
+                ts_socket.connect(ts_server_binding)
+                tsConnected = True
+
             ts_socket.send(line.encode('utf-8'))
             ts_data_received = ts_socket.recv(100)
             ts_resolved_entry = ts_data_received.decode('utf-8')
