@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
 
 def TSserver():
     try:
-        rs_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+        ts_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
         print("[S:] TS socket created")
     except mysoc.error as err:
         print('{}\n'.format("TS socket open error",err))
@@ -44,5 +44,5 @@ def TSserver():
             csockid.send("%s + - Error:HOST NOT FOUND" % client_data_received)
 
 
-    rs_socket.close()
+    ts_socket.close()
     exit()
