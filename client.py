@@ -40,7 +40,7 @@ def initSockets():
         rs_socket.send(line.encode('utf-8'))
         #received data from RS
         rs_data_received = rs_socket.recv(100)
-        rs_resolved_entry = ts_data_received.decode('utf-8')
+        rs_resolved_entry = rs_data_received.decode('utf-8')
         print("[C:] recieved", rs_resolved_entry)
         #split string to determine A or NS
         splicedEntry = rs_resolved_entry[len(resolved_entry-2):]
@@ -53,7 +53,7 @@ def initSockets():
         elif splicedEntry == 'NS':
             #split on space, take s[0] as TS hostname
             splitResolved = resolved_entry.split(" ")
-            if tsConnected == False
+            if tsConnected == False:
                 #setup TS
                 ts_addr = splitResolved[0].trim()
                 ts_port = 50008

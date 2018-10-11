@@ -7,6 +7,14 @@ if len(sys.argv) != 2:
     sys.exit()
 
 def TSserver():
+
+    fDNSTSnames = open(sys.argv[1], "r")
+    fDNSTSList = fDNSTSnames.readlines()
+    inputEntries = []
+    for entry in fDNSTSList:
+        print("[TS:] Storing: ",entry)
+        inputEntries.append(entry)
+
     try:
         ts_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
         print("[S:] TS socket created")
@@ -23,12 +31,6 @@ def TSserver():
     csockid,addr=ts_socket.accept()
     print("[TS:] connection request from ",addr)
 
-    fDNSTSnames = open(sys.argv[1], "r")
-    fDNSTSList = fDNSTSnames.readlines()
-    inputEntries = []
-    for entry in fDNSTSList:
-        print("Storing: ",entry)
-        inputEntries.append(entry)
     entryFound = False
     while True:
         client_data_received = csockid.recv(100).decode('utf-8')

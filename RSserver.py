@@ -6,10 +6,21 @@ if len(sys.argv) != 2:
     print("invalid arguments, must provide DNS entries file")
     sys.exit()
 
+def split( str ):
+    
+
 def RSserver():
+
+    fDNSRSnames = open(sys.argv[1], "r")
+    fDNSRSList = fDNSRSnames.readlines()
+    inputEntries = []
+    for entry in fDNSRSList:
+        print("[RS:] Storing: ",entry)
+        inputEntries.append(entry)
+
     try:
         rs_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-        print("[S:] RS socket created")
+        print("[RS:] RS socket created")
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error",err))
 
@@ -23,20 +34,18 @@ def RSserver():
     csockid,addr=rs_socket.accept()
     print("[RS:] connection request from ",addr)
 
-    fDNSRSnames = open(sys.argv[1], "r")
-    fDNSRSList = fDNSRSnames.readlines()
-    inputEntries = []
-    for entry in fDNSRSList:
-        print("Storing: ",entry)
-        inputEntries.append(entry)
     while True:
         client_data_received = csockid.recv(100).decode('utf-8')
-        if not data:
-            break
+        #if not data:
+            #break
         for entry in inputEntries:
-            splitEntry = entry.split(" ")
-            entryHostname = splitEntry[0].trim()
-            entryCode = splitEntry[2].trim()
+            print("[RS:] entry is %s" % entry)
+            splitEntry = entry.split("  ")
+            print("[RS:] entry 1 is %s" % splitEntry[0])
+            print("[RS:] entry 2 is %s" % splitEntry[1])
+            print("[RS:] entry 3 is %s" % splitEntry[2])
+            entryHostname = splitEntry[0]
+            entryCode = splitEntry[2]
             if entryCode == 'NS':
                 csockid.send(entryHostname.encode('utf-8'))
             elif entryHostname == client_data_received:
