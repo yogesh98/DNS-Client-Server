@@ -34,8 +34,8 @@ def RSserver():
     while True:
         client_data = csockid.recv(100)
         print("[RS:] recieved: %s" %client_data)
-        #if not data:
-            #break
+        if not client_data:
+            break
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0]
