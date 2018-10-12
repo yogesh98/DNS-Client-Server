@@ -38,9 +38,9 @@ def initSockets():
         #Send each line to RS server
         stripLine = line.rstrip()
         print("[C:] sending:", stripLine)
-        rs_socket.send(line.encode('utf-8'))
+        rs_socket.send(line)
         #received data from RS
-        rs_data = rs_socket.recv(100).decode('utf-8').strip()
+        rs_data = rs_socket.recv(100).strip()
         print("[C:] recieved", rs_data)
         #split string to determine A or NS
         splicedEntry = rs_data[:-2]
@@ -61,9 +61,8 @@ def initSockets():
                 ts_socket.connect(ts_server_binding)
                 tsConnected = True
 
-            ts_socket.send(line.encode('utf-8'))
+            ts_socket.send(line)
             ts_data_received = ts_socket.recv(100)
-            ts_resolved_entry = ts_data_received.decode('utf-8')
             #If error is not found, write to RESOLVED.txt
             if ts_resolved_entry.find("Error:") == -1:
                 fOut.write("%s\n" % ts_resolved_entry)

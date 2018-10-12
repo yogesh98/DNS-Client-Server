@@ -12,8 +12,8 @@ def TSserver():
     fDNSTSList = fDNSTSnames.readlines()
     inputEntries = []
     for entry in fDNSTSList:
-        print("[TS:] Storing: ",entry)
-        inputEntries.append(entry)
+        print("[TS:] Storing: ",entry.rstrip())
+        inputEntries.append(entry.rstrip())
 
     try:
         ts_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
@@ -33,14 +33,14 @@ def TSserver():
 
     found = False
     while True:
-        client_data = csockid.recv(100).decode('utf-8')
+        client_data = csockid.recv(100)
         #if not data:
             #break
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0]
             if entryHostname == client_data:
-                csockid.send(entry.encode('utf-8'))
+                csockid.send(entry)
                 found = True
         if not found:
             csockid.send("%s - Error:HOST NOT FOUND" %client_data)

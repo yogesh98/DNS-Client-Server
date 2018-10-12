@@ -32,20 +32,21 @@ def RSserver():
     print("[RS:] connection request from ",addr)
 
     while True:
-        client_data = csockid.recv(100).decode('utf-8')
+        client_data = csockid.recv(100)
         print("[RS:] recieved: %s" %client_data)
         #if not data:
             #break
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0]
-            print("[RS:] hostname: %s" %entryHostname)
+            print("[RS:] hostname: %s" % entryHostname)
             entryCode = splitEntry[-1]
+            entryCode.strip()
             if entryCode == 'NS':
-                csockid.send(entry.encode('utf-8'))
-            elif entryHostname == client_data:
-                print("[RS:] Sending: %s" %entry)
-                csockid.send(entry.encode('utf-8'))
+                csockid.send(entry)
+            if entryHostname == client_data:
+                print("[RS:] Sending: %s" % entry)
+                csockid.send(entry)
 
     rs_socket.close()
     exit()
