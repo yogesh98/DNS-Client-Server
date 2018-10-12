@@ -6,9 +6,6 @@ if len(sys.argv) != 2:
     print("invalid arguments, must provide DNS entries file")
     sys.exit()
 
-def split( str ):
-    
-
 def RSserver():
 
     fDNSRSnames = open(sys.argv[1], "r")
@@ -35,21 +32,20 @@ def RSserver():
     print("[RS:] connection request from ",addr)
 
     while True:
-        client_data_received = csockid.recv(100).decode('utf-8')
+        client_data = csockid.recv(100).decode('utf-8')
+        print("[RS:] recieved: %s" %client_data)
         #if not data:
             #break
         for entry in inputEntries:
-            print("[RS:] entry is %s" % entry)
-            splitEntry = entry.split("  ")
-            print("[RS:] entry 1 is %s" % splitEntry[0])
-            print("[RS:] entry 2 is %s" % splitEntry[1])
-            print("[RS:] entry 3 is %s" % splitEntry[2])
+            splitEntry = entry.split(" ")
             entryHostname = splitEntry[0]
-            entryCode = splitEntry[2]
+            print("[RS:] hostname: %s" %entryHostname)
+            entryCode = splitEntry[-1]
             if entryCode == 'NS':
-                csockid.send(entryHostname.encode('utf-8'))
-            elif entryHostname == client_data_received:
-                csockid.send(entryHostname.encode('utf-8'))
+                csockid.send(entry.encode('utf-8'))
+            elif entryHostname == client_data:
+                print("[RS:] Sending: %s" %entry)
+                csockid.send(entry.encode('utf-8'))
 
     rs_socket.close()
     exit()

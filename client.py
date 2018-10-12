@@ -36,19 +36,19 @@ def initSockets():
 
     for line in fHostnamesList:
         #Send each line to RS server
-        print("[C:] sending:",line)
+        stripLine = line.rstrip()
+        print("[C:] sending:", stripLine)
         rs_socket.send(line.encode('utf-8'))
         #received data from RS
-        rs_data_received = rs_socket.recv(100)
-        rs_resolved_entry = rs_data_received.decode('utf-8')
-        print("[C:] recieved", rs_resolved_entry)
+        rs_data = rs_socket.recv(100).decode('utf-8').strip()
+        print("[C:] recieved", rs_data)
         #split string to determine A or NS
-        splicedEntry = rs_resolved_entry[len(resolved_entry-2):]
-        splicedEntry.strip()
+        splicedEntry = rs_data[:-2]
+        print("%s\n" %splicedEntry)
         #if A write to RESVOLVED.txt
         if splicedEntry == 'A':
-            print("[C:] Writing to RESOLVED:",rs_resolved_entry)
-            fOut.write("%s\n" % rs_resolved_entry)
+            print("[C:] Writing to RESOLVED:",rs_data)
+            fOut.write("%s\n" % rs_data)
         #otherwise NS, go to TS server from resolved entry string
         elif splicedEntry == 'NS':
             #split on space, take s[0] as TS hostname
