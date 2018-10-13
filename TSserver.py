@@ -12,39 +12,49 @@ def TSserver():
     fDNSTSList = fDNSTSnames.readlines()
     inputEntries = []
     for entry in fDNSTSList:
-        print("[TS:] Storing: ",entry.rstrip())
-        inputEntries.append(entry.rstrip())
+        inputEntries.append(entry.strip("\n"))
 
     try:
         ts_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-        print("[TS:] TS socket created")
     except mysoc.error as err:
         print('{}\n'.format("TS socket open error",err))
 
-    ts_server_binding=('', 50007)
+    ts_server_binding=('', 52328)
     ts_socket.bind(ts_server_binding)
     ts_socket.listen(1)
     hostname = mysoc.gethostname()
-    print("[TS:] Server hostname:",hostname)
     ts_host_ip = (mysoc.gethostbyname(hostname))
-    print("[TS:] IP is",ts_host_ip)
     csockid,addr=ts_socket.accept()
-    print("[TS:] connection request from ",addr)
 
-    found = False
     while True:
         client_data = csockid.recv(100)
-        #if not data:
-            #break
+        foundEntry = False
+        if not client_data:
+            break
+        client_data = client_data.strip("\n")
+        client_data = client_data.strip("\r")
+        print("[TS:] Recieved: %s" % client_data)
+
         for entry in inputEntries:
             splitEntry = entry.split(" ")
-            entryHostname = splitEntry[0]
+            entryHostname = splitEntry[0].strip("\n")
+            entryHostname = splitEntry[0].strip("\r")
+            entryHostname = splitEntry[0].strip()
+            flag = splitEntry[-1]
+            flag = flag.strip()
+
+            print("Hostname: %s Flag: %s" %(entryHostname, flag))
+
             if entryHostname == client_data:
+                foundEntry = True
+                print("[TS:] Sending: %s" % entry)
                 csockid.send(entry)
-                found = True
-        if not found:
-            csockid.send("%s - Error:HOST NOT FOUND" %client_data)
-    rs_socket.close()
+                break
+            if foundEntry == False:
+                print("[TS:] Sending Error")
+                error = client_data+" - Error:HOST NOT FOUND\n"
+
+    ts_socket.close()
     exit()
 
 TSserver()

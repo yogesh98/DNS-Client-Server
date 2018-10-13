@@ -19,7 +19,7 @@ def RSserver():
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error",err))
 
-    rs_server_binding=('', 50007)
+    rs_server_binding=('', 51237)
     rs_socket.bind(rs_server_binding)
     rs_socket.listen(1)
     hostname = mysoc.gethostname()
