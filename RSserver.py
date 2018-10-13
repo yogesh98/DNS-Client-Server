@@ -12,12 +12,10 @@ def RSserver():
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
     for entry in fDNSRSList:
-        print("[RS:] Storing: %s" % entry)
         inputEntries.append(entry.strip("\n"))
 
     try:
         rs_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-        print("[RS:] RS socket created")
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error",err))
 
@@ -30,28 +28,33 @@ def RSserver():
 
     while True:
         client_data = csockid.recv(100)
+        foundEntry = False
         if not client_data:
             break
         client_data = client_data.strip("\n")
         client_data = client_data.strip("\r")
-        print("[RS:] recieved: %s" % client_data)
-        print repr(client_data)
+        print("[RS:] Recieved: %s" % client_data)
 
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0].strip("\n")
             entryHostname = splitEntry[0].strip("\r")
             entryHostname = splitEntry[0].strip()
+            flag = splitEntry[-1]
+            flag = flag.strip()
 
-            print("[RS:] hostname: ")
-            print repr(entryHostname)
-            entryCode = splitEntry[-1]
-            entryCode.strip()
-            if entryCode == 'NS':
-                csockid.send(entry)
+            print("Hostname: %s Flag: %s" %(entryHostname, flag))
+
             if entryHostname == client_data:
+                foundEntry = True
                 print("[RS:] Sending: %s" % entry)
                 csockid.send(entry)
+                break
+            if flag == 'NS':
+                print("PRINT")
+                if foundEntry == False:
+                    print("[RS:] Sending NS")
+                    csockid.send(entry)
 
     rs_socket.close()
     exit()

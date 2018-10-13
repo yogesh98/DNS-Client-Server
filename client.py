@@ -42,7 +42,7 @@ def initSockets():
         rs_data = rs_socket.recv(100).strip()
         print("[C:] recieved", rs_data)
         #split string to determine A or NS
-        splicedEntry = rs_data[:-2]
+        splicedEntry = rs_data[len(rs_data)-2:].strip()
         print("%s\n" %splicedEntry)
         #if A write to RESVOLVED.txt
         if splicedEntry == 'A':
@@ -51,7 +51,7 @@ def initSockets():
         #otherwise NS, go to TS server from resolved entry string
         elif splicedEntry == 'NS':
             #split on space, take s[0] as TS hostname
-            splitResolved = resolved_entry.split(" ")
+            splitResolved = rs_data.split(" ")
             if tsConnected == False:
                 #setup TS
                 ts_addr = splitResolved[0].strip()
