@@ -35,6 +35,8 @@ def RSserver():
         client_data = csockid.recv(100)
         print("[RS:] recieved: ")
         print repr(client_data)
+        client_data = client_data.strip("\n")
+        client_data = client_data.strip("\r")
         if not client_data:
             break
         for entry in inputEntries:
