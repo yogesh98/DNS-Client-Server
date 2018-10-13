@@ -1,9 +1,9 @@
 import sys
 import socket as mysoc
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 2:
     #Check if correct system arguments
-    print("invalid arguments, must provide hostnames.txt, RS hostname")
+    print("invalid arguments, must provide file with hostnames")
     sys.exit()
 
 def initSockets():
@@ -22,8 +22,7 @@ def initSockets():
     except mysoc.error as err:
         print('{}\n'.format("TS socket open error", err))
 
-    #setup RS
-    rs_addr = sys.argv[2]
+    rs_addr = mysoc.gethostbyname(mysoc.gethostname())
     rs_port = 50007
     rs_server_binding = (rs_addr,rs_port)
     rs_socket.connect(rs_server_binding)
@@ -55,7 +54,7 @@ def initSockets():
             splitResolved = resolved_entry.split(" ")
             if tsConnected == False:
                 #setup TS
-                ts_addr = splitResolved[0].trim()
+                ts_addr = splitResolved[0].strip()
                 ts_port = 50008
                 ts_server_binding = (ts_addr,ts_port)
                 ts_socket.connect(ts_server_binding)

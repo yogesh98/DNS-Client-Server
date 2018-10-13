@@ -12,8 +12,8 @@ def RSserver():
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
     for entry in fDNSRSList:
-        print("[RS:] Storing: ",entry)
-        inputEntries.append(entry)
+        print("[RS:] Storing: %s" % entry)
+        inputEntries.append(entry.strip("\n"))
 
     try:
         rs_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
@@ -25,20 +25,18 @@ def RSserver():
     rs_socket.bind(rs_server_binding)
     rs_socket.listen(1)
     hostname = mysoc.gethostname()
-    print("[RS:] Server hostname:",hostname)
     rs_host_ip = (mysoc.gethostbyname(hostname))
-    print("[RS:] IP is",rs_host_ip)
     csockid,addr=rs_socket.accept()
-    print("[RS:] connection request from ",addr)
 
     while True:
         client_data = csockid.recv(100)
-        print("[RS:] recieved: ")
-        print repr(client_data)
-        client_data = client_data.strip("\n")
-        client_data = client_data.strip("\r")
         if not client_data:
             break
+        client_data = client_data.strip("\n")
+        client_data = client_data.strip("\r")
+        print("[RS:] recieved: %s" % client_data)
+        print repr(client_data)
+
         for entry in inputEntries:
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0].strip("\n")
