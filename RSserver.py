@@ -43,6 +43,8 @@ def RSserver():
             splitEntry = entry.split(" ")
             entryHostname = splitEntry[0].strip("\n")
             entryHostname = splitEntry[0].strip("\r")
+            entryHostname = splitEntry[0].strip()
+
             print("[RS:] hostname: ")
             print repr(entryHostname)
             entryCode = splitEntry[-1]
