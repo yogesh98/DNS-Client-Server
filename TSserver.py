@@ -41,7 +41,6 @@ def TSserver():
             entryHostname = splitEntry[0].strip("\r")
             entryHostname = splitEntry[0].strip()
 
-            print("Hostname: %s" % entryHostname)
             if entryHostname == client_data:
                 foundEntry = True
                 print("[TS:] Sending: %s" % entry)
@@ -49,7 +48,7 @@ def TSserver():
                 break
         if foundEntry == False:
             print("[TS:] Sending Error")
-            error = client_data+" - Error:HOST NOT FOUND\n"
+            error = client_data+" - Error:HOST NOT FOUND"
             csockid.send(error)
 
 

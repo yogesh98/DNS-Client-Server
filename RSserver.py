@@ -43,8 +43,6 @@ def RSserver():
             flag = splitEntry[-1]
             flag = flag.strip()
 
-            print("Hostname: %s Flag: %s" %(entryHostname, flag))
-
             if entryHostname == client_data:
                 foundEntry = True
                 print("[RS:] Sending: %s" % entry)

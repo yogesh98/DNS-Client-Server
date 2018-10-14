@@ -11,14 +11,12 @@ def initSockets():
     #init rs socket
     try:
         rs_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-        print("[C:] RS socket created")
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error", err))
 
     #init ts socket
     try:
         ts_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-        print("[C:] TS socket created")
     except mysoc.error as err:
         print('{}\n'.format("TS socket open error", err))
 
@@ -36,11 +34,11 @@ def initSockets():
     for line in fHostnamesList:
         #Send each line to RS server
         stripLine = line.rstrip()
-        print("[C:] sending:", stripLine)
+        print("[C:] sending to RS:", stripLine)
         rs_socket.send(line)
         #received data from RS
         rs_data = rs_socket.recv(100).strip()
-        print("[C:] recieved", rs_data)
+        print("[C:] Recieved from RS:", rs_data)
         #split string to determine A or NS
         splicedEntry = rs_data[len(rs_data)-2:].strip()
         #if A write to RESVOLVED.txt
@@ -57,12 +55,12 @@ def initSockets():
                 ts_server_binding = (ts_addr,ts_port)
                 ts_socket.connect(ts_server_binding)
                 tsConnected = True
-                print("Connected to TS")
-            print("Sending to TS %s" %line)
+            print("Sending to TS:",line)
             ts_socket.send(line)
             ts_data_received = ts_socket.recv(100)
             #If error is not found, write to RESOLVED.txt
             if ts_data_received.find("Error:") == -1:
+                print("Writing:", ts_data_received)
                 fOut.write("%s\n" % ts_data_received)
             else:
                 print(ts_data_received)
