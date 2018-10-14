@@ -62,10 +62,10 @@ def initSockets():
             ts_socket.send(line)
             ts_data_received = ts_socket.recv(100)
             #If error is not found, write to RESOLVED.txt
-            if ts_resolved_entry.find("Error:") == -1:
-                fOut.write("%s\n" % ts_resolved_entry)
+            if ts_data_received.find("Error:") == -1:
+                fOut.write("%s\n" % ts_data_received)
             else:
-                print(ts_resolved_entry)
+                print(ts_data_received)
     rs_socket.close()
     exit()
 

@@ -51,7 +51,6 @@ def RSserver():
                 csockid.send(entry)
                 break
             if flag == 'NS':
-                print("PRINT")
                 if foundEntry == False:
                     print("[RS:] Sending NS")
                     csockid.send(entry)

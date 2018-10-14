@@ -40,19 +40,18 @@ def TSserver():
             entryHostname = splitEntry[0].strip("\n")
             entryHostname = splitEntry[0].strip("\r")
             entryHostname = splitEntry[0].strip()
-            flag = splitEntry[-1]
-            flag = flag.strip()
 
-            print("Hostname: %s Flag: %s" %(entryHostname, flag))
-
+            print("Hostname: %s" % entryHostname)
             if entryHostname == client_data:
                 foundEntry = True
                 print("[TS:] Sending: %s" % entry)
                 csockid.send(entry)
                 break
-            if foundEntry == False:
-                print("[TS:] Sending Error")
-                error = client_data+" - Error:HOST NOT FOUND\n"
+        if foundEntry == False:
+            print("[TS:] Sending Error")
+            error = client_data+" - Error:HOST NOT FOUND\n"
+            csockid.send(error)
+
 
     ts_socket.close()
     exit()
