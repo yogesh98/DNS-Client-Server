@@ -1,14 +1,9 @@
 import sys
 import socket as mysoc
 
-if len(sys.argv) != 2:
-    #Check if correct system arguments
-    print("invalid arguments, must provide DNS entries file")
-    sys.exit()
-
 def TSserver():
 
-    fDNSTSnames = open(sys.argv[1], "r")
+    fDNSTSnames = open("PROJ1-DNSTS.txt", "r")
     fDNSTSList = fDNSTSnames.readlines()
     inputEntries = []
     for entry in fDNSTSList:

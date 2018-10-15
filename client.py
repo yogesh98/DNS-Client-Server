@@ -1,11 +1,6 @@
 import sys
 import socket as mysoc
 
-if len(sys.argv) != 2:
-    #Check if correct system arguments
-    print("invalid arguments, must provide file with hostnames")
-    sys.exit()
-
 def initSockets():
 
     #init rs socket
@@ -25,8 +20,9 @@ def initSockets():
     rs_server_binding = (rs_addr,rs_port)
     rs_socket.connect(rs_server_binding)
 
+    #Open necessary files
     fOut = open("RESOLVED.txt", "w+")
-    fHostnames = open(sys.argv[1], "r")
+    fHostnames = open("PROJ1-HNS.txt", "r")
     fHostnamesList = fHostnames.readlines()
 
     tsConnected = False
@@ -58,12 +54,10 @@ def initSockets():
             print("Sending to TS:",line)
             ts_socket.send(line)
             ts_data_received = ts_socket.recv(100)
-            #If error is not found, write to RESOLVED.txt
-            if ts_data_received.find("Error:") == -1:
-                print("Writing:", ts_data_received)
-                fOut.write("%s\n" % ts_data_received)
-            else:
-                print(ts_data_received)
+            #write to RESOLVED.txt
+            print("Writing:", ts_data_received)
+            fOut.write("%s\n" % ts_data_received)
+
     rs_socket.close()
     exit()
 

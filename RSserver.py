@@ -1,14 +1,9 @@
 import sys
 import socket as mysoc
 
-if len(sys.argv) != 2:
-    #Check if correct system arguments
-    print("invalid arguments, must provide DNS entries file")
-    sys.exit()
-
 def RSserver():
 
-    fDNSRSnames = open(sys.argv[1], "r")
+    fDNSRSnames = open("PROJ1-DNSRS.txt", "r")
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
     for entry in fDNSRSList:
